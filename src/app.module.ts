@@ -1,31 +1,23 @@
-
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { DataSource } from 'typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AdminModule } from './Admin/admin.module';
-import { UserModule } from './Admin/Users/user.module';
+import { CustomerModule } from './customer/customer.module';
+import { UserEntity } from './customer/customer.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forRootAsync({
-      useFactory: () => ({
-        type: 'postgres',
-        host: 'localhost',
-        port: 5432,
-        username: 'postgres',
-        password: 'zimzim',     
-        database: 'AdminDB',  
-        autoLoadEntities: true,
-        synchronize: true,       
-      }),
-
-
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: 'localhost',
+      port: 5432,
+      username: 'postgres',        
+      password: 'postgres',        
+      database: 'store_management',
+      entities: [UserEntity],
+      synchronize: true,           
     }),
-
-    AdminModule,
-    UserModule, 
+    CustomerModule,
   ],
   controllers: [AppController],
   providers: [AppService],
